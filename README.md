@@ -9,7 +9,7 @@ use the following form, should be quite fast
 https://c3s.unito.it/helpdesk/
 ### 2. Store your ssh key to gitlab
 In order to log in to occam, it need to recognize the machine you are using to log in. 
-First check if you already have a ["/home/{USER}/.ssh/id_rsa.pub"] file in your local machine. If not follow these instructions: 
+First check if you already have a ```/home/{USER}/.ssh/id_rsa.pub``` file in your local machine. If not follow these instructions: 
 https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 Copy the ssh-key from:
 ```shell
