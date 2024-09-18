@@ -4,10 +4,10 @@ OCCAM how to : https://c3s.unito.it/index.php/super-computer/occam-howto
 
 
 # Before anything else: 
-# 1. request an OCCAM account
+### 1. request an OCCAM account
 use the following form, should be quite fast
 https://c3s.unito.it/helpdesk/
-# 2. Store your ssh key to gitlab
+### 2. Store your ssh key to gitlab
 In order to log in to occam, it need to recognize the machine you are using to log in. 
 First check if you already have a ["/home/{USER}/.ssh/id_rsa.pub"] file in your local machine. If not follow these instructions: 
 https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -17,7 +17,7 @@ cat /home/{USER}/.ssh/id_rsa.pub
 ```
 go to https://gitlab.c3s.unito.it/ then from the personal menu, click on "Edit Profile" and then on "SSH Keys" on the lateral menubar
 
-# 3. login to OCCAM
+### 3. login to OCCAM
 You should now be able to login to occam
 ```shell
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore
