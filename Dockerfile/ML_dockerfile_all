@@ -16,6 +16,7 @@ WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c", "-l"]
 
+# This is to set your conda env in you
 RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
     chmod ugo+x miniconda.sh && \
     ./miniconda.sh -b -p /opt/conda && \
