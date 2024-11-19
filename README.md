@@ -1,14 +1,21 @@
 This is a sum-up of different documents on how to use OCCAM and run snakemake pipelines. That's what worked in my case. If in doubt, I did it wrong
-The aim is fully practical, if you are interested in the theorics of "Why are we doing that" please go to the original documents listed
-OCCAM how to : https://c3s.unito.it/index.php/super-computer/occam-howto
+The aim is fully practical, if you are interested in the theorics of "Why are we doing that" please go to the original documents in
+[OCCAM how to](https://c3s.unito.it/index.php/super-computer/occam-howto)
 
 
 # Before anything else: 
 ### 1. request an OCCAM account
 use the following form, should be quite fast
 https://c3s.unito.it/helpdesk/
+
+### 2. sign in to gitlab and update your password:
+Login to the GitLab repository, using your OCCAM username and password. If that's the first 
+time you are accessing your gitlab remotely and that you didn't receive a password when getting your occam account
+(you only logged in using the c3s authentification protocol through your unito email) you'll first have to set up a 
+password in your gitlab -> edit profile -> password -> I forgot my password -> reset password
+
 ### 2. Store your ssh key to gitlab
-In order to log in to occam, it need to recognize the machine you are using to log in. 
+In order to log in to occam, it needs to recognize the machine you are using to log in. 
 First check if you already have a ```/home/{USER}/.ssh/id_rsa.pub``` file in your local machine. If not follow these instructions: 
 https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 Copy the ssh-key from:
@@ -23,12 +30,15 @@ You should now be able to login to occam
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore
 ```
 
+### 4. install docker
+for ubuntu follow the instruction from the [Install using the apt repository](https://docs.docker.com/engine/install/ubuntu/) section
+
 # I. Create an image locally on push it to your gitlab repository
-### 1. Build a dockerfile
-For training purpose I suggest to clone the following git repo and used the dockerfile from there
+### 1. Write a dockerfile
+For training purpose I suggest to clone this current git repo and use the dockerfile OCCAM_examples/local/dockerfiles/test_dockerfile
 ```shell
-git clone git@gitlab.c3s.unito.it:bagnasco/docker-example.git
-cd docker-example/
+git clone https://github.com/mathilde999/OCCAM_examples
+cd OCCAM_examples
 ```
 You can also write your own dockerfile. You can see an example of mine in the Dockerfiles folder of this repo (to be updated)
 ### 2. Build the image from a dockerfile
@@ -61,6 +71,7 @@ You can access your image entry in the remote repo here : https://gitlab.c3s.uni
 # II. Running on OCCAM
 For the full list of commands accessible on occam check:
 https://c3s.unito.it/index.php/super-computer/occam-reference
+
 ### 1. Login to OCCAM
 ```shell
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore

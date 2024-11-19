@@ -33,7 +33,7 @@ RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-${MINICO
 RUN conda config --add channels bioconda  && \
     conda config --add channels conda-forge && \
     conda install -c conda-forge mamba && \
-    mamba create -n ${CONDA_ENV_NAME} python pandas bcftools snakemake
+    mamba create -n ${CONDA_ENV_NAME} python plink2 snakemake
 
 # All the below lines are magic too, do not touch
 ENV PATH="/opt/conda/envs/${CONDA_ENV_NAME}/bin:/opt/conda/bin:${PATH}"
