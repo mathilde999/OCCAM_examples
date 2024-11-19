@@ -76,15 +76,19 @@ https://c3s.unito.it/index.php/super-computer/occam-reference
 ```shell
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore
 ```
-### 2. Create an example directory 
+### 2. Create an example directory
+git clone the current github repo (you can also rsync it, see below sections)
 ```shell
-mkdir docker-example
-cd docker-example/
+git clone https://github.com/mathilde999/OCCAM_examples
+cd OCCAM_examples/dataset/working_dir/
 ```
-#### 3. Run the container on occam using the image you have previously pushed
+### 3. Run the container on node22 (testing node) using the image you have previously pushed
 ```shell
-occam-run {USER}/{PROJECT}/{image_name}:{tag} # this container path format is also the one you should use in the docker parameter of your snakefile
+occam-run -n node22 -i {USER}/{PROJECT}/{image_name}:{tag}
 ```
+
+
+
 # III. A mix of tips
 ### 1. Run interactive - Training purpose only 
 Create a dockerfile with CMD ["/bin/bash"] (like https://gitlab.c3s.unito.it/egrassi/bwa_example/Dockerfile) and use  occam-run -i 
@@ -105,7 +109,7 @@ rsync -azvP {USER}@occam.c3s.unito.it:/archive/home/{USER}/{FILE} /{PATH}/{TO}/{
 ```
 
 ### 4. Mount your occam home folder when running a container
-Note actually certain when to use it
+Not actually certain when to use it
 ```shell
 occam-run -v $(PWD):$(PWD) {USER}/{PROJECT}/{image_name}:{tag}
 ```

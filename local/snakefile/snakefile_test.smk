@@ -15,27 +15,34 @@ rule vcf_to_plink:
         out = 'plink/' + prefix
     resources:
         mem_mb=4000
+    log:
+        err='logfiles/plink_' + prefix + '.err',
+        out='logfiles/plink_' + prefix + '.out'
     benchmark:
         'benchmarks/plink_' + prefix + '.txt'
     shell:
         '''
-	plink2 --vcf {input.vcf} --out {params.out} --allow-extra-chr --maf 0.05 --geno 0.8 --make-pgen --memory {resources.mem_mb}
+	(plink2 --vcf {input.vcf} --out {params.out} --allow-extra-chr --maf 0.05 --geno 0.8 --make-pgen --memory {resources.mem_mb}) 2>> {log.err} && 1>> {log.out}
         '''
 rule LD_pruning:
     input:
         ped='plink/' + prefix + '.pgen'
     output:
-        prune_in='LDpruning/' + prefix + '.prune.in',
+        prune_in='LDpruning/' + prefix + '.LDpruned.prune.in',
         ped='LDpruning/' + prefix + '.LDpruned.ped'
     params:
         inp='plink/' + prefix ,
         out='LDpruning/' + prefix + '.LDpruned'
     resources:
         mem_mb=4000
+    log:
+        err='logfiles/LDpruning_' + prefix + '.err',
+        out='logfiles/LDpruning_' + prefix + '.out'
     benchmark:
         'benchmarks/LDpruning_' + prefix + '.txt'
     shell:
+        #I am using --bad-ld because less than 50 ind to estimate LD, that is vert bad, don't do this, only for training purpose
         '''
-        plink2 --pfile {params.inp} --indep-pairwise 500 50 0.4 --out {params.out} --memory {resources.mem_mb}
-        plink2 --pfile {params.inp} --extract {output.prune_in}  --out {params.out} --export ped --memory {resources.mem_mb}
+        (plink2 --pfile {params.inp} --indep-pairwise 500 50 0.4 --out {params.out} --memory {resources.mem_mb} --bad-ld
+        plink2 --pfile {params.inp} --extract {output.prune_in}  --out {params.out} --export ped --memory {resources.mem_mb}) 2>> {log.err} && 1>> {log.out}
         '''
