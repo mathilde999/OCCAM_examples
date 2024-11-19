@@ -82,14 +82,34 @@ git clone the current github repo (you can also rsync it, see below sections)
 git clone https://github.com/mathilde999/OCCAM_examples
 cd OCCAM_examples/dataset/working_dir/
 ```
+You can also rsync your local directory to occam, see section IV
+
 ### 3. Run the container on node22 (testing node) using the image you have previously pushed
 ```shell
 occam-run -n node22 -i {USER}/{PROJECT}/{image_name}:{tag}
 ```
 
+# III. How I submit a snakemake pipeline (BAD but works)
+### 1. Create your image
+See above. But basically write your dockerfile (you can find an example in dockerfiles/ML_dockerfile_all), build the image and push it to gitlab
 
+### 2. Run your image interactively 
+open a screen https://linuxize.com/post/how-to-use-linux-screen/
 
-# III. A mix of tips
+```shell
+screen -S my_test_screen
+```
+
+```shell
+occam-run -n [booked_node] -i {USER}/{PROJECT}/{image_name}:{tag}
+```
+booked_node = node22 for example or any other node you have booked 
+
+Run your snakemake pipeline as usual. Don't forget to set the snakemake resources depedning on the ressources you have booked. 
+```shell
+snakemake -s my_snakefile.smk -c [booked_threads] --resources mem_mb=[booked_memory]
+```
+# IV. A mix of tips
 ### 1. Run interactive - Training purpose only 
 Create a dockerfile with CMD ["/bin/bash"] (like https://gitlab.c3s.unito.it/egrassi/bwa_example/Dockerfile) and use  occam-run -i 
 -i = interactive mode (will substitute entrypoint or cmd with a call to /bin/bash) ** use only for testing purposes
@@ -113,28 +133,6 @@ Not actually certain when to use it
 ```shell
 occam-run -v $(PWD):$(PWD) {USER}/{PROJECT}/{image_name}:{tag}
 ```
-
-# IV. How I submit a snakemake pipeline (BAD but works)
-### 1. Create your image
-See above. But basically write your dockerfile (you can find an example in Dockerfiles/ML_dockerfile_all), build the image and push it to gitlab
-
-### 2. Run your image interactively 
-open a screen https://linuxize.com/post/how-to-use-linux-screen/
-
-```shell
-screen -S a_new_screen
-```
-
-```shell
-occam-run -n [booked_node] -i {USER}/{PROJECT}/{image_name}:{tag}
-```
-booked_node = node22 for example or any other node you have booked 
-
-Run your snakemake pipeline as usual. Don't forget to set the snakemake resources depedning on the ressources you have booked. 
-```shell
-snakemake -s my_snakefile.smk -c [booked_threads] --resources mem_mb=[booked_memory]
-```
-
 
 # V. Set up your snakemake env to use docker with your snakemake pipeline (GOOD but hard to make it works)
 That should be thre right solution but didn't work for me 

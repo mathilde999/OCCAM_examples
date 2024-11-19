@@ -22,7 +22,7 @@ rule vcf_to_plink:
         'benchmarks/plink_' + prefix + '.txt'
     shell:
         '''
-	(plink2 --vcf {input.vcf} --out {params.out} --allow-extra-chr --maf 0.05 --geno 0.8 --make-pgen --memory {resources.mem_mb}) 2>> {log.err} && 1>> {log.out}
+	(plink2 --vcf {input.vcf} --out {params.out} --allow-extra-chr --maf 0.05 --geno 0.8 --make-pgen --memory {resources.mem_mb})> {log.out} && 2> {log.err}
         '''
 rule LD_pruning:
     input:
@@ -43,6 +43,6 @@ rule LD_pruning:
     shell:
         #I am using --bad-ld because less than 50 ind to estimate LD, that is vert bad, don't do this, only for training purpose
         '''
-        (plink2 --pfile {params.inp} --indep-pairwise 500 50 0.4 --out {params.out} --memory {resources.mem_mb} --bad-ld
-        plink2 --pfile {params.inp} --extract {output.prune_in}  --out {params.out} --export ped --memory {resources.mem_mb}) 2>> {log.err} && 1>> {log.out}
+        (plink2 --pfile {params.inp} --indep-pairwise 500 50 0.4 --out {params.out} --memory {resources.mem_mb} --bad-ld 
+        plink2 --pfile {params.inp} --extract {output.prune_in}  --out {params.out} --export ped --memory {resources.mem_mb})> {log.out} && 2> {log.err}
         '''
