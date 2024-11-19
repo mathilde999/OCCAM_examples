@@ -6,7 +6,7 @@ rule all:
     input:
         'LDpruning/' + prefix + '.LDpruned.ped'
 
-rule convert_to_plink_ancestral:
+rule vcf_to_plink:
     input:
         vcf = input_vcf
     output:
