@@ -3,7 +3,7 @@ The aim is fully practical, if you are interested in the theorics of "Why are we
 OCCAM how to : https://c3s.unito.it/index.php/super-computer/occam-howto
 
 
-# Before anything else: test
+# Before anything else: 
 ### 1. request an OCCAM account
 use the following form, should be quite fast
 https://c3s.unito.it/helpdesk/
@@ -65,7 +65,7 @@ https://c3s.unito.it/index.php/super-computer/occam-reference
 ```shell
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore
 ```
-### 2. Create a example directory 
+### 2. Create an example directory 
 ```shell
 mkdir docker-example
 cd docker-example/
