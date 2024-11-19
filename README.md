@@ -16,8 +16,7 @@ password in your gitlab -> edit profile -> password -> I forgot my password -> r
 
 ### 2. Store your ssh key to gitlab
 In order to log in to occam, it needs to recognize the machine you are using to log in. 
-First check if you already have a ```/home/{USER}/.ssh/id_rsa.pub``` file in your local machine. If not follow these instructions: 
-https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+First check if you already have a ```/home/{USER}/.ssh/id_rsa.pub``` file in your local machine. If not follow these [instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 Copy the ssh-key from:
 ```shell
 cat /home/{USER}/.ssh/id_rsa.pub
@@ -35,30 +34,31 @@ for ubuntu follow the instruction from the [Install using the apt repository](ht
 
 # I. Create an image locally on push it to your gitlab repository
 ### 1. Write a dockerfile
-For training purpose I suggest to clone this current git repo and use the dockerfile OCCAM_examples/local/dockerfiles/test_dockerfile
+For training purpose I suggest to clone this current git repo and use the dockerfile ```OCCAM_examples/local/dockerfiles/test_dockerfile```
 ```shell
 git clone https://github.com/mathilde999/OCCAM_examples
 cd OCCAM_examples
 ```
-You can also write your own dockerfile. You can see an example of mine in the Dockerfiles folder of this repo (to be updated)
-### 2. Build the image from a dockerfile
-You have to use a tag that includes the final gitlab repository
+You can also write your own dockerfile. You can see another example I am using ```OCCAM_examples/local/dockerfiles/ML_dockerfile_all```
+
+### 2. Create your gitlab repo
+Sign in to https://gitlab.c3s.unito.it/  and create a new directory (click on the ```+``` signe left to your profil picture)
+
+### 3. Build the image from a dockerfile
+You have name the image as it's finale path in gitlab repository
 ```shell
-docker build -t gitlab.c3s.unito.it:5000/{USER}/{PROJECT}/{image_name}:{tag} . # the tag is not mandatory. It can be the version number for example
+sudo docker build -t gitlab.c3s.unito.it:5000/{USER}/{PROJECT}/{image_name}:{tag}  - < OCCAM_examples/local/dockerfiles/test_dockerfile
 ```
-You can also define the specific dockerfile to use that way 
+You can see the images you have created with:
 ```shell
-docker build -t gitlab.c3s.unito.it:5000/mandre/{USER}/{image_name}:{tag}  - < Dockerfile
+sudo docker images
 ```
-### 3. Run the container on your desktop/laptop to see docker in action:
+### 4. Run the container locally to see docker in action:
 ```shell
-docker run -ti --rm --volume ${PWD}:${PWD} --workdir ${PWD} gitlab.c3s.unito.it:5000/mandre/{USER}/{image_name}:{tag}
+sudo docker run -ti --rm --volume ${PWD}:${PWD} --workdir ${PWD} gitlab.c3s.unito.it:5000/{USER}/{PROJECT}/{image_name}:{tag}
 ```
-### 4. Upload the image to your gitlab repository
-**A.** Login to the GitLab repository, using your OCCAM username and password. If that's the first 
-time you are accessing your gitlab remotely and that you didn't receive a password when getting your occam account
-(you only logged in using the c3s authentification protocol through your unito email) you'll first have to set up a 
-password in your gitlab -> edit profile -> password -> I forgot my password -> reset password
+### 5. Push the image to your gitlab repository
+**A.** Login to the GitLab 
 ```shell
 docker login gitlab.c3s.unito.it:5000
 ```
