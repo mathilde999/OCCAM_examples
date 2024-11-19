@@ -1,0 +1,41 @@
+FROM debian:stable-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV MINICONDA_VERSION="latest"
+ENV CONDA_ENV_NAME="ML"
+
+RUN apt-get update --fix-missing && \
+    apt-get install -y wget bzip2 ca-certificates \
+    libglib2.0-0 libxext6 libsm6 libxrender1 \
+    vim git mercurial subversion \
+    gmsl gawk perl python-is-python3 \
+    python3-setuptools python3-pip \
+    procps uuid-runtime
+
+WORKDIR /tmp
+
+SHELL ["/bin/bash", "-c", "-l"]
+
+# This is to set your conda env
+RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
+    chmod ugo+x miniconda.sh && \
+    ./miniconda.sh -b -p /opt/conda && \
+    rm miniconda.sh  && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh  && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> /etc/profile
+RUN conda config --add channels bioconda  && \
+    conda config --add channels conda-forge && \
+    conda install -c conda-forge mamba && \
+    mamba create -n ${CONDA_ENV_NAME} python pandas bcftools vcftools datamash numpy statsmodels scikit-learn joblib cyvcf2 snakemake
+
+ENV PATH="/opt/conda/envs/${CONDA_ENV_NAME}/bin:/opt/conda/bin:${PATH}"
+ENV CONDA_DEFAULT_ENV=${CONDA_ENV_NAME}
+ENV CONDA_PREFIX="/opt/conda/envs/${CONDA_ENV_NAME}"
+
+RUN head -n 56 /etc/profile.d/conda.sh > /tmp/newconda.sh && mv /tmp/newconda.sh /etc/profile.d/conda.sh
+
+# for interactive occam-run which uses -l and has the user home mounted by default
+RUN echo "export PATH=/opt/conda/envs/${CONDA_ENV_NAME}/bin:/opt/conda/bin:${PATH}" >> /etc/profile
+
+# Activate conda environment and run the desired command
+CMD ["/bin/bash"]

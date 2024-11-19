@@ -1,9 +1,11 @@
 FROM debian:stable-slim
 
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 ENV MINICONDA_VERSION="latest"
-ENV CONDA_ENV_NAME="ML"
+#You can change the name of you env
+ENV CONDA_ENV_NAME="test_env"
 
+# Purely magic to me but that works
 RUN apt-get update --fix-missing && \
     apt-get install -y wget bzip2 ca-certificates \
     libglib2.0-0 libxext6 libsm6 libxrender1 \
@@ -16,22 +18,28 @@ WORKDIR /tmp
 
 SHELL ["/bin/bash", "-c", "-l"]
 
-# This is to set your conda env in you
+# This is to set your conda env
+# I used miniconda but it is probably better to use miniforge now for the potential future problems with the default channel.
+# Instead I have juste removes the default channel from the conda config call below and I won't recommend changing the
+# following lines much if you are in a hurry as it took us a while to make all of this work
 RUN wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
     chmod ugo+x miniconda.sh && \
     ./miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh  && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh  && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> /etc/profile
-RUN conda config --add channels defaults  && \
-    conda config --add channels bioconda  && \
+
+# You can play a little bit more with the lines below depending on your needs
+RUN conda config --add channels bioconda  && \
     conda config --add channels conda-forge && \
     conda install -c conda-forge mamba && \
-    mamba create -n ${CONDA_ENV_NAME} python pandas bcftools vcftools datamash numpy statsmodels scikit-learn joblib cyvcf2 snakemake
+    mamba create -n ${CONDA_ENV_NAME} python pandas bcftools snakemake
 
+# All the below lines are magic too, do not touch
 ENV PATH="/opt/conda/envs/${CONDA_ENV_NAME}/bin:/opt/conda/bin:${PATH}"
 ENV CONDA_DEFAULT_ENV=${CONDA_ENV_NAME}
 ENV CONDA_PREFIX="/opt/conda/envs/${CONDA_ENV_NAME}"
+
 
 RUN head -n 56 /etc/profile.d/conda.sh > /tmp/newconda.sh && mv /tmp/newconda.sh /etc/profile.d/conda.sh
 
