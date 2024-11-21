@@ -14,7 +14,7 @@ time you are accessing your gitlab remotely and that you didn't receive a passwo
 (you only logged in using the c3s authentification protocol through your unito email) you'll first have to set up a 
 password in your gitlab -> edit profile -> password -> I forgot my password -> reset password
 
-### 2. Store your ssh key to gitlab
+### 3. Store your ssh key to gitlab
 In order to log in to occam, it needs to recognize the machine you are using to log in. 
 First check if you already have a ```/home/{USER}/.ssh/id_rsa.pub``` file in your local machine. If not follow these [instructions](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 Copy the ssh-key from:
@@ -23,13 +23,13 @@ cat /home/{USER}/.ssh/id_rsa.pub
 ```
 go to https://gitlab.c3s.unito.it/ then from the personal menu, click on "Edit Profile" and then on "SSH Keys" on the lateral menubar
 
-### 3. login to OCCAM
+### 4. login to OCCAM
 You should now be able to login to occam
 ```shell
 ssh {USER}@occam.c3s.unito.it # running occam-login is not necessary anymore
 ```
 
-### 4. install docker
+### 5. install docker
 for ubuntu follow the instruction from the [Install using the apt repository](https://docs.docker.com/engine/install/ubuntu/) section
 
 # I. Create an image locally on push it to your gitlab repository
